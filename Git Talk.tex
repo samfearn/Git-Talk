@@ -1,0 +1,409 @@
+%& -job-name=newfilenameialwayswanted
+\documentclass{beamer}
+% (fold)
+\graphicspath{{./Images/}} % the folder in which images are stored for this project
+\usepackage{tikz,graphicx,amsmath,hyperref,tcolorbox,fancyvrb,xcolor}
+\hypersetup{colorlinks=true} % make sure our hyperlinks are coloured for visibility
+\definecolor{DBlack}{RGB}{35,31,32}
+\definecolor{DPurple}{RGB}{126,49,123}
+\definecolor{DBlue}{RGB}{0,99,136}
+
+\tcbuselibrary{skins,breakable}
+\newenvironment{BGVerbatim}
+ {\VerbatimEnvironment
+  \begin{tcolorbox}[
+    breakable,
+    colback=lightgray,
+	boxsep=3mm
+  ]%
+  \begin{Verbatim}}
+ {\end{Verbatim}\end{tcolorbox}}
+
+\usecolortheme[RGB={83,13,88}]{structure}
+% This is the theme that we are modifying
+\usetheme{Boadilla}
+
+% Change the font colour to white on the title page to stand out against the purple
+\setbeamercolor{title}{fg=white}
+\setbeamerfont{title}{family=\rmfamily}
+\setbeamercolor{author}{fg=white}
+\setbeamerfont{author}{series=\bfseries}
+\setbeamercolor{institute}{fg=white}
+\setbeamercolor{date}{fg=white}
+\setbeamerfont{date}{series=\bfseries}
+
+% Remove the default ball bullet points in the toc, but keep the numbering
+\setbeamertemplate{sections/subsections in toc}[sections numbered]
+% Change the item icons to be circles rather than balls
+\setbeamertemplate{itemize items}[circle]
+% Define blocks to be rounded rectangles with shadows
+\setbeamertemplate{blocks}[rounded][shadow=true]
+
+% Turn the @ symbol into character class other
+\makeatother
+% Modify the footline to get a two part footline with slide numbers
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  % Create a box with width of slide, containing current slide and total slides
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.25ex,dp=1ex,center]{section in head/foot}%
+    \insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+% Turn the @ symbol back to a letter
+\makeatletter
+
+% Remove the default navigation symbols from the bottom of the slides
+\setbeamertemplate{navigation symbols}{}
+% (end)
+\author{Sam Fearn\\{\small 
+(s.m.fearn@durham.ac.uk)}}
+%\institute[Durham]{Durham University}
+\title{Building a website in 10 minutes with Jekyll}
+\date{November 21\textsuperscript{st}, 2018}
+
+\begin{document}
+% (fold)
+% --- Start Custom Commands --- %
+\renewcommand{\d}[2][]{\ensuremath{\operatorname{d}^{#1}\!{#2}}}
+% --- End Custom Commands --- %
+
+%--- the titlepage frame -------------------------%
+{
+% Draw a purple box for the background of the title slide and add the durham logo at the bottom
+\setbeamertemplate{background canvas}{
+\begin{tikzpicture}
+    \clip (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[color=DPurple] (0,0) rectangle (\paperwidth,\paperheight);
+\end{tikzpicture}
+}
+
+\begin{frame}[plain]
+\maketitle
+\end{frame}
+}
+
+%---Complete Outline--------------------%
+\begin{frame}
+       \frametitle{Outline}
+       \tableofcontents
+\end{frame}
+% (end)
+\Large
+\section{Motivation} % (fold)
+\label{sec:motivation}
+
+\begin{frame}{My Motivation}
+	Why I built a website:
+	
+	\begin{itemize}
+		\item<2-> Needed a place to put the details of my project for students to read.
+		\item<3-> Wanted a place to be able to make notes to myself that others might find interesting.
+		\item<4-> Didn't want anything complicated.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Your Motivation?}
+	\Large
+	Why \textbf{you} might want a website:
+	
+	\begin{itemize}
+		\item<2-> Hold information about your teaching and projects?
+		\item<3-> Host a blog about things you're working on / thinking about?
+		\item<4-> Host your CV and/or publication details?
+		\item<5-> \ldots ?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Demo 1}
+	I wrote two posts discussing most of what I'm going to cover here on my site.
+	
+	\medskip
+	\begin{center}
+		\url{http://www.maths.dur.ac.uk/~sxwc62/}
+	\end{center}
+	
+	\medskip
+	\pause
+    \begin{columns}
+	\begin{column}{0.4\textwidth}
+		This is a \emph{static} site built with Jekyll. I'll explain what this means later.
+	\end{column}
+	\begin{column}{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{jekyllvial}
+	\end{column}
+    \end{columns}
+	
+\end{frame}
+
+% section motivation (end)
+
+\section{Building Blocks}
+\label{sec:bblocks}
+
+\subsection{The big picture} % (fold)
+\label{sub:the_big_picture}
+\begin{frame}{A Modern Complicated Website}
+	\centering
+	\includegraphics[width=\textwidth]{clientserver}
+\end{frame}
+
+\begin{frame}{A Modern Simple Website}
+	\centering
+	\includegraphics[width=\textwidth]{clientnoserver}
+\end{frame}
+
+\begin{frame}{Client-Side Technologies}
+    \begin{columns}
+	\begin{column}{0.6\textwidth}
+		\centering
+		\includegraphics[height=0.8\textheight]{clienttech}
+	\end{column}
+	\begin{column}{0.4\textwidth}
+		\begin{itemize}
+			\item<2->HTML - The Content
+			\item<3->CSS - The Presentation
+			\item<4->Javascript - (Locally) Dynamic Content
+		\end{itemize}
+	\end{column}
+    \end{columns}
+\end{frame}
+
+% subsection the_big_picture (end)
+
+\subsection{HTML} % (fold)
+\label{sub:html}
+
+\begin{frame}{HTML}
+	\begin{itemize}
+		\item<1-> HTML (or HyperText Markup Language) is the language we use to create the \textbf{content} and \textbf{structure} of our website.\pause This is separate to the \textbf{style}.
+		\item<3-> Like a \LaTeX{} document (.tex), an html page is just a plain text file consisting of commands which are to be interpreted later. For \LaTeX{} the .tex file is interpreted by pdflatex (or other) to produce a pdf which we read.
+		\item<4-> An HTML file (.html) is processed by a web browser in order to create visual document from the structured one.
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[fragile]
+\normalsize
+	We're all familiar with creating a basic \LaTeX{} document.
+\begin{BGVerbatim}[numbers=left,numbersep=10pt]
+\documentclass{article}
+% We define an Author, Title and Date
+\author{Sam Fearn}
+\title{A Very Quick Introduction To \LaTeX{}}
+\date{November 21\textsuperscript{st}, 2018}
+
+\begin{document}
+% Create a title from our Author, Title and Date
+\maketitle
+\section{Introduction}
+Some introductory text goes here
+\section{Content}
+The main content goes here
+\end{document}
+\end{BGVerbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\normalsize
+	The equivalent \textbf{content} in HTML might look like:
+\begin{BGVerbatim}[numbers=left,numbersep=10pt]
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>A Very Quick Introduction To HTML</h1>
+<h3>Sam Fearn</h3>
+<h3>November 21<sup>st</sup> 2018</h3>
+
+<h2>Introduction</h2>
+<p>Some introductory text goes here</p>
+<h2>Content</h2>
+<p>The main content goes here</p>
+
+</body>
+</html>
+\end{BGVerbatim}	
+\end{frame}
+
+\begin{frame}[fragile]{HTML Tags}
+	HTML contains many tags, including:
+	\begin{itemize}
+		\item<1-> Opening \verb|<head>| and closing \verb|</head>| tags, used to contain various types of metadata.
+		\item<2-> The anchor tag \verb|<a href="link">|, used to add links to other web pages.
+		\item<3-> The \verb|<img src="link">| tag, used to add images to pages.
+		\item<4-> (Unordered) Lists can be added by using \verb|<ul> </ul>| to denote the list, and then \verb|<li> </li>| to add elements to the list.
+	\end{itemize}
+\end{frame}
+
+% subsection html (end)
+
+\subsection{Markdown} % (fold)
+\label{sub:markdown}
+
+\begin{frame}{Markdown}
+    \begin{columns}
+	\begin{column}{0.6\textwidth}
+		\begin{itemize}
+			\item<1-> Markdown (.md) is processed to create HTML.
+			\item<2-> It covers a subset of the HTML tags, with a focus on the text content.
+			\item<3-> Markdown is very easy to read in plain text form.
+			\item<4-> Can include regular HTML.
+			\item<5-> Markdown can be converted to \LaTeX{}.
+		\end{itemize}
+	\end{column}
+	\begin{column}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{Markdown}
+	\end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Markdown}
+\normalsize
+	The same example as before, now in Markdown:
+\begin{BGVerbatim}[numbers=left,numbersep=10pt]
+# A Very Quick Introduction To HTML
+
+### Sam Fearn
+
+### July 20th 2018
+
+## Introduction
+
+Some introductory text goes here
+
+## Content
+
+The main content goes here
+\end{BGVerbatim}
+\end{frame}
+
+\begin{frame}
+	Jekyll uses markdown as the main filetype for producing the content of a website and processes these into HTML files during the Jekyll `build phase'.
+	
+	\centering
+	\includegraphics[width=0.5\textwidth]{jekyllvial}
+\end{frame}
+
+% subsection markdown (end)
+
+\subsection{CSS} % (fold)
+\label{sub:css}
+
+\begin{frame}{CSS}
+    \begin{columns}
+	\begin{column}{0.6\textwidth}
+		\begin{itemize}
+				\item Cascading Style Sheets (CSS) are used to define the style and formatting for a website.
+				\item CSS defines the \textbf{style \& positioning} to apply to the \textbf{content \& structure} defined in HTML.
+				\item We can save our CSS as a .css file and link to it in the head of our HTML page.
+			\end{itemize}
+	\end{column}
+	\begin{column}{0.4\textwidth}
+		\centering
+		\href{http://blog.int3ractive.com/2012/04/tutorial-realistic-waterfall-with-css3.html}{\includegraphics[width=0.9\textwidth]{waterfall}}
+	\end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{A Basic CSS Example}
+\normalsize
+	A very simple CSS file might contain:
+\begin{BGVerbatim}[numbers=left,numbersep=10pt]
+body {
+    background-color: lightgray;
+}
+
+h1 {
+    color: purple;
+    text-align: center;
+}
+
+p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+}
+\end{BGVerbatim}
+\end{frame}
+
+\begin{frame}{CSS Features}
+	\begin{itemize}
+		\item<1-> Although the previous example was very simple, CSS is very powerful.
+		\item<2-> CSS is capable of defining layout and positioning commands.
+		\item<3-> CSS can provide basic animation.
+		\item<4-> We can also use CSS to apply different styles depending on the browser that is trying to view our page -- this lets us support mobile devices.
+	\end{itemize}
+\end{frame}
+
+% subsection css (end)
+
+\subsection{SASS} % (fold)
+\label{sub:sass}
+
+\begin{frame}{Sass}
+    \begin{columns}
+	\begin{column}{0.6\textwidth}
+		\begin{itemize}
+				\item<1-> Sass (.scss) is a CSS preprocessor -- just like Markdown for HTML.
+				\item<2-> Enables features not part of standard CSS, such as functions, variables and includes
+		\end{itemize}
+	\end{column}
+	\begin{column}{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{sass}
+	\end{column}
+    \end{columns}	
+\end{frame}
+
+\begin{frame}
+	Jekyll uses Sass as the main filetype for defining the styles to be applied to our HTML. These Sass files are processed into a CSS file during the Jekyll `build phase'.
+	
+	\centering
+	\includegraphics[width=0.5\textwidth]{jekyllvial}
+\end{frame}
+
+% subsection sass (end)
+
+\subsection*{Javascript and Coffeescript} % (fold)
+\label{sub:javascript_and_coffeescript}
+
+\begin{frame}{Client-Side Scripts}
+	\begin{itemize}
+		\item Javascript (or Coffeescript -- processed to Javascript) is the client-side programming language of the web.
+		\item JavaScript can be used to manipulate the content, layout and styling of a web page based on the users actions.
+	\end{itemize} 
+\end{frame}
+% subsection javascript_and_coffeescript (end)
+
+\subsection*{Summary} % (fold)
+\label{sub:summary}
+
+\begin{frame}{Summary}
+	\begin{itemize}
+		\item<1-> We write our content using Markdown which is processed by Jekyll to produce the HTML.
+		\item<2-> We write our styling using SASS which is processed into CSS.
+		\item<3-> In practice, we can use a theme which defines the style for us. 
+		\item<3-> We can write our client-side scripts as JavaScript (or CoffeeScript).
+	\end{itemize}
+\end{frame}
+% subsection summary (end)
+
+% section bblocks (end)
+
+\section{Jekyll Demo} % (fold)
+\label{sec:jekyll}
+
+\begin{frame}{Building a site with Jekyll}
+	\Huge \centering Demo
+	
+	\medskip
+	\normalsize
+	This demo uses the \href{https://github.com/gaalcaras/academic}{Academic} theme by Gabriel Alcaras.
+\end{frame}
+% section jekyll (end)
+
+\end{document}
