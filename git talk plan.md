@@ -6,6 +6,7 @@
 * command line or gui use of git
 	* using git to recover and old version of a file
 	* using git for collaboration 
+	* Git GUIs incl. Github Desktop, Fork, 
 * useful resources
 	* [Git - the simple guide][gsg]
 	* [Git Community Book][GCB]

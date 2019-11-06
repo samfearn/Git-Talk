@@ -128,19 +128,90 @@
 
 \section{How to actually use git} % (fold)
 \label{sec:how_to_actually_use_git}
-\begin{frame}{Using Git at the command line}
-	
+\begin{frame}[fragile]{Using Git at the command line}
+	Creating a new repository
+	\begin{itemize}
+		\item<1-> \verb|git init|
+	\end{itemize}
+	\onslide<2->{\textbf{Cloning} an existing repository}
+	\begin{itemize}
+		\item<2-> \verb|git clone username@host:/path/to/repository|
+	\end{itemize}
+	\onslide<3->{Check the \textbf{status} of a repository}
+	\begin{itemize}
+		\item<3-> \verb|git status|
+	\end{itemize}
+	\onslide<4->{\textbf{Add} files to the index}
+	\begin{itemize}
+		\item<4-> \verb|git add filename|
+		\item<5-> Or \verb|git add *|
+		\item<6-> Or \verb|git add -u|
+	\end{itemize}
+	\onslide<7->{ \textbf{Commit} the changes}
+	\begin{itemize}
+		\item<7-> \verb|git commit -m "Helpful message"|
+	\end{itemize}
+	\onslide<8->{ \textbf{Add a remote} server (if neccessary)}
+	\begin{itemize}
+		\item<8-> \verb|git remote add origin <server>|
+	\end{itemize}
+	\onslide<9->{ \textbf{Push} the recent commits}
+	\begin{itemize}
+		\item<9-> \verb|git push origin master|
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{What's going on?}
+	\includegraphics[width=\textwidth]{gitstaging}
+\end{frame}
+
+\begin{frame}[fragile]{Updating to new changes}
+	\onslide<1->{To update to the most recent commit}
+	\begin{itemize}
+		\item<1-> \verb|git pull|
+	\end{itemize}
+	\onslide<2->{This syncs the local repository with the remote one, automatically merging changes}
+	\medskip
+	\onslide<3->{What if we want to work on different things at the same time?}
+	\onslide<4->{Create a new \textbf{branch}}
+	\begin{itemize}
+		\item<4-> \verb|git checkout -b <branch>|
+	\end{itemize}
+	\onslide<5->{After making some changes, \textbf{push} branch}
+	\begin{itemize}
+		\item<5-> \verb|git push origin <branch>|
+	\end{itemize}
+	\onslide<6->{Switch between branches}
+	\begin{itemize}
+		\item<6-> \verb|git checkout <branch>|
+	\end{itemize}
+	\onslide<7->{\textbf{Merge} a branch into the current branch}
+	\begin{itemize}
+		\item<6-> \verb|git merge <branch>|
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{What's going on 2?}
+	\includegraphics[width=\textwidth]{gitbranches}
 \end{frame}
 
 \begin{frame}{Git GUIs}
-	
+	Sorry, I was going to demo, I ran out of time. The following are cross-platform.
+	\begin{itemize}
+		\item Github Desktop
+		\item Fork
+	\end{itemize}
 \end{frame}
 % section how_to_actually_use_git (end)
 
 \section{Useful Resources} % (fold)
 \label{sec:useful_resources}
 \begin{frame}{Useful Resources}
-	 
+	 \begin{itemize}
+	 	\item \href{https://rogerdudler.github.io/git-guide/}{Git - the simple guide}
+	 	\item \href{https://book.git-scm.com}{The Git Community Book}
+	 	\item \href{https://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf}{Git Cheatsheet}
+	 \end{itemize}
 \end{frame}
 % section useful_resources (end)
 
