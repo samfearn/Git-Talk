@@ -8,6 +8,10 @@
 	* using git for collaboration 
 * useful resources
 	* [Git - the simple guide][gsg]
+	* [Git Community Book][GCB]
+	* [Git cheatsheet][cheat]
 
 
 [gsg]: https://rogerdudler.github.io/git-guide/
+[GCB]: https://book.git-scm.com
+[cheat]: https://rogerdudler.github.io/git-guide/files/git_cheat_sheet.pdf
